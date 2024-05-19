@@ -1,0 +1,49 @@
+.navbar {
+  padding: 30px 50px;
+  display: flex;
+  color: white;
+  justify-content: space-between;
+  background: rgba(42, 42, 137, 0.684);
+}
+.logo {
+  font-size: 40px;
+  font-weight: bold;
+  color: red;
+}
+
+.icon span {
+  font-size: 40px;
+  padding-right: 40px;
+  position: relative;
+}
+
+.icon span::after {
+  position: absolute;
+  content: "1";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: bold;
+  top: -8px;
+  right: 25%;
+  width: 30px;
+  height: 30px;
+  background: rgba(42, 42, 137, 0.507);
+  color: white;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border: 2px solid white;
+}
+
+.footer {
+  padding: 30px 40px;
+  background: rgba(42, 42, 137, 0.507);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
