@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { act } from "react";
+import { json } from "react-router-dom";
 const initialState = {
   cartItems: [],
   cartTotalQuantity: 0,
@@ -19,12 +20,15 @@ export const cartSlice = createSlice({
         state.cartTotalQuantity = state.cartItems[itemIndex].cartQuantity;
         state.cartTotalAmount =
           state.cartItems[itemIndex].cartQuantity * action.payload.price;
+        localStorage.setItem("Cart", JSON.stringify(state));
       } else {
         const temporary = { ...action.payload, cartQuantity: 1 };
         state.cartItems.push(temporary);
         state.cartTotalQuantity = temporary.cartQuantity;
         state.cartTotalAmount = temporary.cartQuantity * action.payload.price;
+        localStorage.setItem("Cart", JSON.stringify(state));
       }
+      //   console.log(JSON.parse(localStorage.getItem("Cart")));
 
       //   using the help of filter method
       //   let findItem = state.cartItems.filter(
