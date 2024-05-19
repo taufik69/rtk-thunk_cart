@@ -1,25 +1,19 @@
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { FetcherProduct } from "./Features/AllSlice/ProductSlice/ProductSlice";
+import { useGetProductQuery } from "./Features/ProductApi/ProductApi.js";
 import ProductHolder from "./ProductHolder";
 import Loading from "./Loading";
 import Error from "./Error";
 const Prouduct = () => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(FetcherProduct("https://dummyjson.com/products"));
-  }, [dispatch]);
-  const { product, status, SerializedError } = useSelector(
-    (state) => state.product
-  );
+  const { data, error, isLoading } = useGetProductQuery();
+  console.log(error);
 
   let content = null;
-  if (status == "pending") {
+  if (isLoading) {
     content = <Loading />;
-  } else if (SerializedError) {
-    content = <Error errorObject={SerializedError} />;
+  } else if (error) {
+    content = <Error errorObject={error} />;
   } else {
-    content = <ProductHolder productAll={product.products} />;
+    content = <ProductHolder productAll={data} />;
   }
   return <div>{content}</div>;
 };
