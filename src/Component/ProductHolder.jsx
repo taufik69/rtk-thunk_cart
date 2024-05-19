@@ -6,6 +6,7 @@ const ProductHolder = ({ productAll }) => {
   const handleAddToCart = (productDetails) => {
     dispatch(addToCart(productDetails));
   };
+
   return (
     <div>
       <div className="produtWrapper">
