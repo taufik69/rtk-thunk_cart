@@ -1,9 +1,15 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { removeCart } from "./Features/CartSlice/cartSlice";
 const Cart = () => {
+  const Dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
-  console.log(cart);
-  console.log(cart);
+  const { cartItems } = cart;
+
+  // HandleRemoveCartItem
+  const HandleRemoveCartItem = (id) => {
+    Dispatch(removeCart(id));
+  };
   return (
     <div className="cart">
       <h1>Shopping Cart</h1>
@@ -15,25 +21,51 @@ const Cart = () => {
           <div class="header-item">TOTAL</div>
         </div>
 
-        <div class="cart-item">
-          <div class="product">
-            <img
-              src="https://images.unsplash.com/photo-1712785021787-72b6d6c837e8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8fA%3D%3D"
-              alt="iPhone 12"
-            />
-            <div class="product-info">
-              <h2>iPhone 12</h2>
-              <p>5.4-inch mini display</p>
-              <button class="remove">Remove</button>
+        <div className="wholeCartCheckoutWrapper">
+          <div className="productWrapper">
+            {cartItems?.map((item) => (
+              <div class="cart-item" key={item.id}>
+                <div class="product">
+                  <div className="imgHolder">
+                    <img src={item.thumbnail} alt="iPhone 12" />
+                  </div>
+                  <div class="product-info">
+                    <h2>{item.title}</h2>
+                    <p>{item.description}</p>
+                    <button
+                      class="remove"
+                      onClick={() => HandleRemoveCartItem(item.id)}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+                <div class="price">${item.price}</div>
+                <div class="quantity">
+                  <button class="minus">-</button>
+                  <input type="text" value={item.cartQuantity} />
+                  <button class="plus">+</button>
+                </div>
+                <div class="total">${item.price * item.cartQuantity}</div>
+              </div>
+            ))}
+          </div>
+          <div className="subtotalWrapper">
+            <button className="clearBtn">Clear Cart</button>
+
+            <div className="subTotalbox">
+              <div className="subTotal">
+                <p>Subtotal</p>
+                <p>$0</p>
+              </div>
+              <p>Taxes and shipping calculated at checkout</p>
+              <button className="checkout">CheckOut</button>
+              <button className="backToShopping">
+                <span>&#x2190; </span>
+                <p>continue shopping</p>
+              </button>
             </div>
           </div>
-          <div class="price">$699</div>
-          <div class="quantity">
-            <button class="minus">-</button>
-            <input type="text" value="2" />
-            <button class="plus">+</button>
-          </div>
-          <div class="total">$1398</div>
         </div>
       </div>
     </div>
