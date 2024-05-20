@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { act } from "react";
-import { json } from "react-router-dom";
+import { toast, Bounce } from "react-toastify";
 const initialState = {
-  cartItems: [],
+  cartItems: localStorage.getItem("Cart")
+    ? JSON.parse(localStorage.getItem("Cart"))
+    : [],
   cartTotalQuantity: 0,
   cartTotalAmount: 0,
 };
@@ -20,13 +21,38 @@ export const cartSlice = createSlice({
         state.cartTotalQuantity = state.cartItems[itemIndex].cartQuantity;
         state.cartTotalAmount =
           state.cartItems[itemIndex].cartQuantity * action.payload.price;
-        localStorage.setItem("Cart", JSON.stringify(state));
+        localStorage.setItem("Cart", JSON.stringify(state.cartItems));
+        toast(
+          ` Added ${state.cartItems[itemIndex].cartQuantity} times  ${action.payload.title}`,
+          {
+            position: "top-left",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          }
+        );
       } else {
         const temporary = { ...action.payload, cartQuantity: 1 };
         state.cartItems.push(temporary);
         state.cartTotalQuantity = temporary.cartQuantity;
         state.cartTotalAmount = temporary.cartQuantity * action.payload.price;
-        localStorage.setItem("Cart", JSON.stringify(state));
+        localStorage.setItem("Cart", JSON.stringify(state.cartItems));
+        toast(`${action.payload.title} added in cart`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       }
       //   console.log(JSON.parse(localStorage.getItem("Cart")));
 
