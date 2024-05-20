@@ -7,8 +7,8 @@ const Cart = () => {
   const { cartItems } = cart;
 
   // HandleRemoveCartItem
-  const HandleRemoveCartItem = (id) => {
-    Dispatch(removeCart(id));
+  const HandleRemoveCartItem = (product) => {
+    Dispatch(removeCart(product));
   };
   return (
     <div className="cart">
@@ -34,7 +34,7 @@ const Cart = () => {
                     <p>{item.description}</p>
                     <button
                       class="remove"
-                      onClick={() => HandleRemoveCartItem(item.id)}
+                      onClick={() => HandleRemoveCartItem(item)}
                     >
                       Remove
                     </button>

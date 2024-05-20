@@ -75,9 +75,20 @@ export const cartSlice = createSlice({
     },
     removeCart: (state, action) => {
       const removeItem = state.cartItems.filter(
-        (item) => item.id !== action.payload
+        (item) => item.id !== action.payload.id
       );
       state.cartItems = removeItem;
+      toast.error(`${action.payload.title} is removed`, {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
       localStorage.setItem("Cart", JSON.stringify(state.cartItems));
     },
   },
