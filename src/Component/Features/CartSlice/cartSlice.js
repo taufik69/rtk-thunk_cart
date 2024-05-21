@@ -91,8 +91,52 @@ export const cartSlice = createSlice({
       });
       localStorage.setItem("Cart", JSON.stringify(state.cartItems));
     },
+    incrementCart: (state, action) => {
+      const indexItem = state.cartItems.findIndex((item) => {
+        return item.id === action.payload.id;
+      });
+      if (indexItem >= 0) {
+        state.cartItems[indexItem].cartQuantity += 1;
+        toast.info(`${action.payload.title} is Added`, {
+          position: "top-left",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+        localStorage.setItem("Cart", JSON.stringify(state.cartItems));
+      }
+    },
+    decrementCart: (state, action) => {
+      const findIndex = state.cartItems.findIndex((item) => {
+        return item.id === action.payload.id;
+      });
+      if (state.cartItems[findIndex].cartQuantity >= 1) {
+        state.cartItems[findIndex].cartQuantity -= 1;
+      } else if (state.cartItems[findIndex].cartQuantity === 1) {
+        state.cartItems = state.cartItems[findIndex];
+      }
+
+      toast.error(`${action.payload.title} is Decreced`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      localStorage.setItem("Cart", JSON.stringify(state.cartItems));
+    },
   },
 });
 
-export const { addToCart, removeCart } = cartSlice.actions;
+export const { addToCart, removeCart, incrementCart, decrementCart } =
+  cartSlice.actions;
 export default cartSlice.reducer;

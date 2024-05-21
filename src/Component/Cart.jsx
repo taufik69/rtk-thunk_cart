@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { removeCart } from "./Features/CartSlice/cartSlice";
+import {
+  removeCart,
+  incrementCart,
+  decrementCart,
+} from "./Features/CartSlice/cartSlice";
 const Cart = () => {
   const Dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
@@ -9,6 +13,15 @@ const Cart = () => {
   // HandleRemoveCartItem
   const HandleRemoveCartItem = (product) => {
     Dispatch(removeCart(product));
+  };
+
+  // handleDecrement product
+  const handleDecrement = (item) => {
+    Dispatch(incrementCart(item));
+  };
+
+  const handleIncrement = (item) => {
+    Dispatch(decrementCart(item));
   };
   return (
     <div className="cart">
@@ -42,9 +55,13 @@ const Cart = () => {
                 </div>
                 <div class="price">${item.price}</div>
                 <div class="quantity">
-                  <button class="minus">-</button>
+                  <button class="minus" onClick={() => handleIncrement(item)}>
+                    -
+                  </button>
                   <input type="text" value={item.cartQuantity} />
-                  <button class="plus">+</button>
+                  <button class="plus" onClick={() => handleDecrement(item)}>
+                    +
+                  </button>
                 </div>
                 <div class="total">${item.price * item.cartQuantity}</div>
               </div>
