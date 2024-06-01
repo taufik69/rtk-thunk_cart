@@ -19,7 +19,7 @@
 
 .icon span::after {
   position: absolute;
-  content: "1";
+  content: attr(quantity);
   display: flex;
   justify-content: center;
   align-items: center;
