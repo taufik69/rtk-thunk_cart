@@ -115,28 +115,57 @@ export const cartSlice = createSlice({
       const findIndex = state.cartItems.findIndex((item) => {
         return item.id === action.payload.id;
       });
-      if (state.cartItems[findIndex].cartQuantity >= 1) {
+      if (state.cartItems[findIndex].cartQuantity > 1) {
         state.cartItems[findIndex].cartQuantity -= 1;
-      } else if (state.cartItems[findIndex].cartQuantity === 1) {
-        state.cartItems = state.cartItems[findIndex];
+        toast.error(`${action.payload.title} is Decreced`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      } else if (state.cartItems[findIndex].cartQuantity == 1) {
+        state.cartItems = state.cartItems;
+        toast.info(`${action.payload.title} Can't be Decreced`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       }
 
-      toast.error(`${action.payload.title} is Decreced`, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
       localStorage.setItem("Cart", JSON.stringify(state.cartItems));
+    },
+    getTotal: (state, action) => {
+      const { TotalQuantity, TotalAmount } = state.cartItems.reduce(
+        (CartTotal, cartItem) => {
+          const { cartQuantity, price } = cartItem;
+          const TotalitemAmount = cartQuantity * price;
+          CartTotal.TotalAmount += TotalitemAmount;
+          CartTotal.TotalQuantity += cartQuantity;
+          return CartTotal;
+        },
+        {
+          TotalQuantity: 0,
+          TotalAmount: 0,
+        }
+      );
+      state.cartTotalAmount = TotalAmount;
+      state.cartTotalQuantity = TotalQuantity;
+      console.log(TotalAmount, TotalQuantity);
     },
   },
 });
 
-export const { addToCart, removeCart, incrementCart, decrementCart } =
+export const { addToCart, removeCart, incrementCart, decrementCart, getTotal } =
   cartSlice.actions;
 export default cartSlice.reducer;

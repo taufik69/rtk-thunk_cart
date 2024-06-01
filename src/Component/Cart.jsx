@@ -1,14 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   removeCart,
   incrementCart,
   decrementCart,
+  getTotal,
 } from "./Features/CartSlice/cartSlice";
 const Cart = () => {
   const Dispatch = useDispatch();
+
   const cart = useSelector((state) => state.cart);
-  const { cartItems } = cart;
+  const { cartItems, cartTotalQuantity, cartTotalAmount } = cart;
+
+  useEffect(() => {
+    Dispatch(getTotal());
+  }, [cart, Dispatch]);
 
   // HandleRemoveCartItem
   const HandleRemoveCartItem = (product) => {
@@ -72,9 +78,9 @@ const Cart = () => {
 
             <div className="subTotalbox">
               <div className="subTotal">
-                <p>Subtotal</p>
-                <p>$0</p>
+                <p>Total Item: {cartTotalQuantity}</p>
               </div>
+              <p>TotalAmount ${cartTotalAmount}</p>
               <p>Taxes and shipping calculated at checkout</p>
               <button className="checkout">CheckOut</button>
               <button className="backToShopping">
